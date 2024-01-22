@@ -13,6 +13,7 @@ fn main() {
         "1a" => day1::part1(),
         "1b" => day1::part2(),
         "2a" => day2::part1(),
+        "2b" => day2::part2(),
         _ => println!("[ERROR] Project with id '{id}' does not exist."),
     }
 }
