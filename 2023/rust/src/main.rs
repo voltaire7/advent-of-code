@@ -2,6 +2,7 @@ use std::env;
 
 mod day1;
 mod day2;
+mod day3;
 
 fn main() {
     if env::args().len() != 2 {
@@ -14,6 +15,7 @@ fn main() {
         "1b" => day1::part2(),
         "2a" => day2::part1(),
         "2b" => day2::part2(),
+        "3a" => day3::part1(),
         _ => println!("[ERROR] Project with id '{id}' does not exist."),
     }
 }
