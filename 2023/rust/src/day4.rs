@@ -1,7 +1,7 @@
 pub fn part1() {
-    todo!()
+    todo!();
 }
 
 pub fn part2() {
-    todo!()
+    todo!();
 }
