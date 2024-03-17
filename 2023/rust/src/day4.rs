@@ -72,7 +72,7 @@ pub fn part2() {
     (0..content.len()).for_each(|x| {
         if content[x].0 != 0 {
             (x + 1..x + 1 + content[x].0).for_each(|y| {
-                content[y].1 += 1 * content[x].1;
+                content[y].1 += content[x].1;
             });
         }
     });

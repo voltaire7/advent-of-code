@@ -30,12 +30,7 @@ pub fn part1() {
                 y.iter()
                     .find_map(|z| {
                         if x >= z.1 && x <= z.1 + z.2 {
-                            Some(
-                                (0..z.2)
-                                    .find_map(|a| if a + z.1 == x { Some(a) } else { None })
-                                    .unwrap()
-                                    + z.0,
-                            )
+                            Some((0..z.2).find(|a| a + z.1 == x).unwrap() + z.0)
                         } else {
                             None
                         }
@@ -49,8 +44,7 @@ pub fn part1() {
             let x = find_destination(x, &content[3]);
             let x = find_destination(x, &content[4]);
             let x = find_destination(x, &content[5]);
-            let x = find_destination(x, &content[6]);
-            x
+            find_destination(x, &content[6]);
         })
         .min();
     dbg!(out);
@@ -77,7 +71,7 @@ pub fn part2() {
         .map(|x| x.parse::<u64>().unwrap())
         .collect::<Vec<u64>>();
 
-    let seeds = (0..seeds.len() / 2).fold(Box::new(0..0 as u64) as MyIter, |acc, x| {
+    let seeds = (0..seeds.len() / 2).fold(Box::new(0..0_u64) as MyIter, |acc, x| {
         Box::new(acc.chain(Box::new(seeds[x * 2]..seeds[x * 2 + 1]) as MyIter)) as MyIter
     });
 

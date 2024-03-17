@@ -33,7 +33,7 @@ pub fn part1() {
     // Filter letters
     let content: String = content
         .chars()
-        .filter(|&c| c.is_digit(10) || c == '\n')
+        .filter(|&c| c.is_ascii_digit() || c == '\n')
         .collect();
 
     // Take only first and last chars
@@ -42,7 +42,7 @@ pub fn part1() {
         .map(|s| {
             let first = s.chars().next().unwrap().to_string();
             let last = s.chars().last().unwrap().to_string();
-            return first + &last;
+            first + &last
         })
         .collect();
 
@@ -141,7 +141,7 @@ pub fn part2() {
         .map(|s| {
             let first = s.chars().next().unwrap().to_string();
             let last = s.chars().last().unwrap().to_string();
-            return first + &last;
+            first + &last
         })
         .collect();
 

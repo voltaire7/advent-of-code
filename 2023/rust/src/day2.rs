@@ -9,16 +9,10 @@ pub fn part1() {
                 let split: Vec<&str> = i.split(' ').collect();
                 let num: u32 = split[1].parse().unwrap();
                 match split[2] {
-                    "red" if num > 12 => {
-                        return true;
-                    }
-                    "green" if num > 13 => {
-                        return true;
-                    }
-                    "blue" if num > 14 => {
-                        return true;
-                    }
-                    _ => return false,
+                    "red" if num > 12 => true,
+                    "green" if num > 13 => true,
+                    "blue" if num > 14 => true,
+                    _ => false,
                 }
             });
 
