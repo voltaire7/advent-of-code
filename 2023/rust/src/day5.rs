@@ -1,59 +1,39 @@
 pub fn part1() {
-    let content = include_str!("../../inputs/day-5")
-        .trim()
-        .split("\n\n")
-        .collect::<Vec<&str>>();
+    let content = include_str!("../../inputs/day-5").trim().split("\n\n");
     let seeds = content
-        .first()
+        .clone()
+        .next()
         .unwrap()
         .split_whitespace()
         .skip(1)
-        .map(|x| x.parse::<u64>().unwrap())
-        .collect::<Vec<u64>>();
-    let content = content
-        .iter()
-        .skip(1)
+        .map(|x| x.parse::<u64>().unwrap());
+    let maps = content.into_iter().skip(1).map(|x| {
+        let mut x = x
+            .split(|y| y == '\n' || y == ' ')
+            .skip(2)
+            .map(|y| y.parse::<u64>().unwrap());
+        (0..x.clone().count() / 3)
+            .map(move |_| (x.next().unwrap(), x.next().unwrap(), x.next().unwrap()))
+    });
+    let result = seeds
         .map(|x| {
-            let mut x = x
-                .split(|y| y == '\n' || y == ' ')
-                .skip(2)
-                .map(|y| y.parse::<u64>().unwrap());
-            (0..x.clone().count() / 3)
-                .map(|_| (x.next().unwrap(), x.next().unwrap(), x.next().unwrap()))
-                .collect::<Vec<(u64, u64, u64)>>()
+            maps.clone().fold(x, |prev, next| {
+                next.clone()
+                    .find(|item| prev >= item.1 && prev <= item.1 + item.2)
+                    .map(|item| item.0 + item.2 - prev.abs_diff(item.1 + item.2))
+                    .unwrap_or(prev)
+            })
         })
-        .collect::<Vec<Vec<(u64, u64, u64)>>>();
-    let out = seeds
-        .into_iter()
-        .map(|x| {
-            let find_destination = |x, y: &Vec<(u64, u64, u64)>| {
-                y.iter()
-                    .find_map(|z| {
-                        if x >= z.1 && x <= z.1 + z.2 {
-                            Some((0..z.2).find(|a| a + z.1 == x).unwrap() + z.0)
-                        } else {
-                            None
-                        }
-                    })
-                    .unwrap_or(x)
-            };
-
-            let x = find_destination(x, &content[0]);
-            let x = find_destination(x, &content[1]);
-            let x = find_destination(x, &content[2]);
-            let x = find_destination(x, &content[3]);
-            let x = find_destination(x, &content[4]);
-            let x = find_destination(x, &content[5]);
-            find_destination(x, &content[6]);
-        })
-        .min();
-    dbg!(out);
+        .min()
+        .unwrap();
+    dbg!(result);
 }
 
 use std::{
     io::{stdout, Write},
     thread::sleep,
     time::Duration,
+    u64,
 };
 type MyIter = Box<dyn Iterator<Item = u64>>;
 
