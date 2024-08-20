@@ -22,21 +22,24 @@ int main() {
 
     int nice = 0;
     for (int i = 0; i < len; i += 17) {
-        int j      = i;
-        int vowelc = 0;
-        int dupc   = 0;
-        for (; j - i < 16; j++) {
-            if (content[j] == 'a' && content[j + 1] == 'b') break;
-            if (content[j] == 'c' && content[j + 1] == 'd') break;
-            if (content[j] == 'p' && content[j + 1] == 'q') break;
-            if (content[j] == 'x' && content[j + 1] == 'y') break;
+        int j = i;
 
-            if (content[j] == 'a' || content[j] == 'e' || content[j] == 'i'
-                || content[j] == 'o' || content[j] == 'u')
-                vowelc++;
-            if (content[j] == content[j + 1]) dupc++;
+        int repeat = 0;
+        for (; j - i < 16; j++) {
+            if (j - i < 14 && content[j] == content[j + 2]) repeat++;
         }
-        if (j - i == 16 && vowelc >= 3 && dupc != 0) nice++;
+
+        int pair = 0;
+        if (repeat)
+            for (j = i; j - i < 13; j++) {
+                for (int k = j + 2; k - i < 15; k++)
+                    if (content[j] == content[k]
+                        && content[j + 1] == content[k + 1]) {
+                        pair++;
+                        break;
+                    }
+            }
+        if (repeat && pair) nice++;
     }
     printf("nice: %i\n", nice);
 }
