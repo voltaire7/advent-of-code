@@ -21,15 +21,14 @@ int main() {
     int count_literal = 0;
     for (int i = 0; content[i]; i++)
         if (content[i] != '\n') count_literal++;
+
     int count_memory = 0;
-    for (int i = 1; content[i]; i++) {
+    for (int i = 0; content[i]; i++) {
         switch (content[i]) {
             case '\\':
-                count_memory++;
-                if (content[++i] == 'x') i += 2;
-                break;
             case '"':
             case '\n':
+                count_memory += 2;
                 break;
             default:
                 count_memory++;
@@ -37,5 +36,5 @@ int main() {
         }
     }
 
-    printf("answer: %i\n", count_literal - count_memory);
+    printf("answer: %i\n", count_memory - count_literal);
 }
