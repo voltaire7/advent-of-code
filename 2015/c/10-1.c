@@ -17,8 +17,7 @@ char* itoa(int val, int base) {
 int main() {
     for (int i = 0; i < 40; i++) {
         for (int j = 0, offset = 0; input[j]; j++) {
-            int n = 1;
-            char c = input[j];
+            int n = 1; char c = input[j];
             while (input[++j] == c) n++; --j;
             offset += sprintf(output + offset, "%i%c", n, c);
         }
