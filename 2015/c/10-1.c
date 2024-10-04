@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
-#define BUFSIZE 1000000
+#define BUFSIZE 10000000
 
 char  input[BUFSIZE] = "1321131112";
 char output[BUFSIZE];
@@ -14,16 +15,15 @@ char* itoa(int val, int base) {
 }
 
 int main() {
-    char c[] = "0";
     for (int i = 0; i < 40; i++) {
-        for (int j = 0; input[j]; j++) {
-            int n = 1; c[0] = input[j];
-            while (input[++j] == c[0]) n++; --j;
-            strcat(output, itoa(n, 10));
-            strcat(output, c);
+        for (int j = 0, offset = 0; input[j]; j++) {
+            int n = 1;
+            char c = input[j];
+            while (input[++j] == c) n++; --j;
+            offset += sprintf(output + offset, "%i%c", n, c);
         }
         strcpy(input, output);
         strcpy(output, "");
     }
-    printf("%s, %lu\n", input, strlen(input));
+    printf("%lu\n", strlen(input));
 }
