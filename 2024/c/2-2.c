@@ -75,23 +75,18 @@ int count(int reports[INPUT_SIZE][MAX_LEVELS]) {
                 }
 
                 int diff = next_level - prev_level;
-                if (diff == 0) {
-                    is_safe = false;
-                    skip++;
-                    break;
-                }
-
                 if (state == -1) state = diff > 0 ? Ascending : Descending;
 
-                if (state == Descending && diff > 0 || state == Ascending && diff < 0) {
-                    is_safe = false;
-                    skip++;
-                    break;
-                } else if (diff > 3 || diff < -3) {
+                bool is_zero = diff == 0;
+                bool is_valid_state = state == Descending && diff > 0 || state == Ascending && diff < 0;
+                bool is_valid_diff_range = diff > 3 || diff < -3;
+
+                if (is_zero || is_valid_state || is_valid_diff_range) {
                     is_safe = false;
                     skip++;
                     break;
                 }
+
                 prev_level = next_level;
             }
         } while (skip != -1 && skip < MAX_LEVELS && report[skip] != 0);
