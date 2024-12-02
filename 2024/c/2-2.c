@@ -94,7 +94,6 @@ int count(int reports[INPUT_SIZE][MAX_LEVELS]) {
                 }
                 prev_level = next_level;
             }
-            printf("%i, %i, %i\n", i+1, is_safe, skip);
         } while (skip != -1 && skip < MAX_LEVELS && report[skip] != 0);
 
         if (is_safe) count++;
