@@ -1,6 +1,6 @@
 target/
 */a.out
-*/.DS_Store
-*/inputs
+**/.DS_Store
+**/inputs/
 
 
