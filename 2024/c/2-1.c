@@ -48,7 +48,6 @@ int main() {
                 continue;
             }
 
-
             int diff = next - prev;
             if (diff == 0) {
                 is_safe = false;
