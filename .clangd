@@ -1,0 +1,7 @@
+CompileFlags: # Tweak the parse settings, example directory given to show format
+  Add:
+    - "-I/opt/homebrew/Cellar/raylib/5.5/include"
+    - "-I./glfw-3.4.bin.MACOS/include/"
+InlayHints:
+  Enabled: No
+
