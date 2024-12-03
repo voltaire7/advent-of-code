@@ -27,7 +27,6 @@ Pair get_pair(char **content) {
     int left, right;
     for (; *(*content + 4); ++*content) {
         if (strncmp("mul(", *content, 4) != 0) continue;
-        char *temp = *content;
         *content += 4;
 
         left = atoi(*content);

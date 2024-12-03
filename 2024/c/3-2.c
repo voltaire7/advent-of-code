@@ -34,7 +34,6 @@ Pair get_pair(char **content) {
         if (!should_do) continue;
 
         if (strncmp("mul(", *content, 4) != 0) continue;
-        char *temp = *content;
         *content += 4;
 
         left = atoi(*content);
