@@ -26,7 +26,7 @@ char* read_entire_file(char* filename) {
 
 Pair get_pair(char **content) {
     int left, right;
-    bool should_do = true;
+    static bool should_do = true;
 
     for (; *(*content + 4); ++*content) {
         if (strncmp("do()", *content, 4) == 0) should_do = true;
