@@ -23,23 +23,23 @@ int main() {
     char chars[SIZE][SIZE];
 
     for (int row = 1; row <= SIZE; row++) {
-        for (int column = 1; column <= SIZE; column++) {
-            chars[row-1][column-1] = content[(row-1) * SIZE + (column-1)];
+        for (int col = 1; col <= SIZE; col++) {
+            chars[row-1][col-1] = content[(row-1) * SIZE + (col-1)];
         }
     }
 
     int count = 0;
     for (int row = 0; row < SIZE-1; row++) {
         for (int col = 0; col < SIZE-1; col++) {
-            for (int horizontal = -1; horizontal <= 1; horizontal++) {
-                for (int vertical = -1; vertical <= 1; vertical++) {
-                    if (row + horizontal*3 < 0 || row + horizontal*3 > SIZE-1 || col + vertical*3 < 0 || col + vertical*3 > SIZE-1) continue;
-                    bool condition =
-                        chars[row + horizontal*0][col + vertical*0] == 'X' &&
-                        chars[row + horizontal*1][col + vertical*1] == 'M' &&
-                        chars[row + horizontal*2][col + vertical*2] == 'A' &&
-                        chars[row + horizontal*3][col + vertical*3] == 'S';
-                    if (condition) count++;
+            for (int h = -1; h <= 1; h++) {
+                for (int v = -1; v <= 1; v++) {
+                    if (row + h*3 < 0 || row + h*3 > SIZE-1 || col + v*3 < 0 || col + v*3 > SIZE-1) continue;
+                    bool cond =
+                        chars[row + h*0][col + v*0] == 'X' &&
+                        chars[row + h*1][col + v*1] == 'M' &&
+                        chars[row + h*2][col + v*2] == 'A' &&
+                        chars[row + h*3][col + v*3] == 'S';
+                    if (cond) count++;
                 }
             }
         }
@@ -49,8 +49,8 @@ int main() {
     return 0;
     // debug
     for (int row = 1; row < SIZE; row++) {
-        for (int column = 1; column < SIZE; column++) {
-            printf("%c", chars[row-1][column-1]);
+        for (int col = 1; col < SIZE; col++) {
+            printf("%c", chars[row-1][col-1]);
         }
         printf("\n");
     }
