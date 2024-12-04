@@ -23,8 +23,8 @@ int main() {
     char chars[SIZE][SIZE];
 
     for (int row = 1; row <= SIZE; row++) {
-        for (int column = 1; column <= SIZE; column++) {
-            chars[row-1][column-1] = content[(row-1) * SIZE + (column-1)];
+        for (int col = 1; col <= SIZE; col++) {
+            chars[row-1][col-1] = content[(row-1) * SIZE + (col-1)];
         }
     }
 
