@@ -57,7 +57,6 @@ int main() {
     collect_updates(content);
 
     int sum = 0;
-    int count = 0;
     for (int i = 0; i < UPDATE_ROW_COUNT; i++) {
         bool valid = true;
         for (int j = 0; j < UPDATE_COL_COUNT; j++) {
@@ -72,11 +71,9 @@ int main() {
         }
         if (valid) continue;
 
-        count++;
         int j = 0;
         while (j < UPDATE_COL_COUNT && updates[i][j] != 0) j++;
         sum += updates[i][j/2];
     }
     printf("sum: %i\n", sum);
-    printf("count: %i\n", count);
 }
