@@ -1,7 +1,6 @@
-#include <stdatomic.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdbool.h>
 
 #define SIZE 130
 
@@ -45,18 +44,16 @@ Vector2 get_position() {
             if (map[y][x] == '^') return (Vector2){ x, y };
         }
     }
-    fprintf(stderr, "Big error.");
+    fprintf(stderr, "Big error.\n");
     exit(1);
 }
 
-int count_steps(Vector2 position) {
-    int count = 0;
+bool is_loop(Vector2 position) {
+    unsigned long count = 0;
     Direction direction = UP;
+
     do {
-        if (map[position.y][position.x] == '.' || map[position.y][position.x] == '^') {
-            count++;
-            map[position.y][position.x] = 'X';
-        }
+        count++;
 
         Vector2 old = position;
         switch (direction) {
@@ -74,25 +71,30 @@ int count_steps(Vector2 position) {
                 break;
         }
 
-        if (map[position.y][position.x] == '#') {
+        if (map[position.y][position.x] == '#' || map[position.y][position.x] == 'O') {
             direction += direction == LEFT ? -LEFT : 1;
             position = old;
         }
+
+        if (count > SIZE * SIZE) return true;
     } while (position.x >= 0 && position.x < SIZE && position.y >= 0 && position.y < SIZE);
-    return count;
+
+    return false;
 }
 
+// 1911, not 1915
 int main() {
     char *content = read_entire_file("2024/inputs/day-6");
     to_map(content);
     Vector2 position = get_position();
-    printf("distinct steps: %i\n", count_steps(position));
 
-    return 0;
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            printf("%c", map[i][j]);
+    int count = 0;
+    for (int y = 0; y <= SIZE; y++) {
+        for (int x = 0; x <= SIZE; x++) {
+            if (map[y][x] == '.') map[y][x] = 'O';
+            count += is_loop(position);
+            if (map[y][x] == 'O') map[y][x] = '.';
         }
-        printf("\n");
     }
+    printf("loops: %i\n", count);
 }
