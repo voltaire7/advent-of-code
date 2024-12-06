@@ -82,7 +82,6 @@ bool is_loop(Vector2 position) {
     return false;
 }
 
-// 1911, not 1915
 int main() {
     char *content = read_entire_file("2024/inputs/day-6");
     to_map(content);
