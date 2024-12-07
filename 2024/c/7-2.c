@@ -32,9 +32,22 @@ void parse(char **content) {
     }
 }
 
+u64 count_digits(u64 n) {
+    int i = 0;
+    for (; n; n /= 10, i++);
+    return i;
+}
+
+u64 concat(u64 x, u64 y) {
+    for (int i = 0; i < count_digits(y); i++) x *= 10;
+    return x + y;
+}
+
 bool find(u64 target, u64 *arr, u64 sum) {
     if (*arr == 0) return target == sum;
-    else return find(target, arr + 1, *arr + sum) || find(target, arr + 1, *arr * sum);
+    else return find(target, arr + 1, *arr + sum) ||
+                find(target, arr + 1, *arr * sum) ||
+                find(target, arr + 1, concat(sum, *arr));
 }
 
 int main() {
