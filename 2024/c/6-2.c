@@ -52,7 +52,7 @@ bool is_loop(Vector2 position) {
     unsigned long count = 0;
     Direction direction = UP;
 
-    do {
+    for (;;) {
         count++;
 
         Vector2 old = position;
@@ -71,13 +71,15 @@ bool is_loop(Vector2 position) {
                 break;
         }
 
+        if (position.x < 0 || position.x >= SIZE || position.y < 0 || position.y >= SIZE) break;
+
         if (map[position.y][position.x] == '#' || map[position.y][position.x] == 'O') {
             direction += direction == LEFT ? -LEFT : 1;
             position = old;
         }
 
         if (count > SIZE * SIZE) return true;
-    } while (position.x >= 0 && position.x < SIZE && position.y >= 0 && position.y < SIZE);
+    }
 
     return false;
 }
