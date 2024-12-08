@@ -4,7 +4,7 @@
 
 #define SIZE 50
 
-char map[SIZE][SIZE] = {};
+char map  [SIZE][SIZE] = {};
 bool bools[SIZE][SIZE] = {};
 
 void find(int *y, int *x) {
