@@ -29,9 +29,7 @@ int main() {
             if (map[y1][x1] == '.') continue;
             char c = map[y1][x1];
             int y2 = y1, x2 = x1;
-            for (;;) {
-                find(&y2, &x2);
-                if (y2 < 0 || x2 < 0) break;
+            while (find(&y2, &x2), y2 >= 0 && x2 >= 0) {
                 int disty = y2 - y1, distx = x2 - x1;
                 if (y1-disty >= 0 && y1-disty < SIZE && x1-distx >= 0 && x1-distx < SIZE) bools[y1-disty][x1-distx] = true;
                 if (y2+disty >= 0 && y2+disty < SIZE && x2+distx >= 0 && x2+distx < SIZE) bools[y2+disty][x2+distx] = true;

@@ -30,10 +30,7 @@ int main() {
             bools[y1][x1] = true;
             char c = map[y1][x1];
             int y2 = y1, x2 = x1;
-            for (;;) {
-                find(&y2, &x2);
-                if (y2 < 0 || x2 < 0) break;
-
+            while (find(&y2, &x2), y2 >= 0 && x2 >= 0) {
                 int disty = y2 - y1, distx = x2 - x1;
                 for (int i = 0; y1-disty*i >= 0 && y1-disty*i < SIZE && x1-distx*i >= 0 && x1-distx*i < SIZE; i++) {
                     bools[y1-disty*i][x1-distx*i] = true;
