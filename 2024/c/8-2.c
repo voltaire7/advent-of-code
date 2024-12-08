@@ -27,7 +27,6 @@ int main() {
     for (int y1 = 0; y1 < SIZE; y1++) {
         for (int x1 = 0; x1 < SIZE; x1++) {
             if (map[y1][x1] == '.') continue;
-            bools[y1][x1] = true;
             char c = map[y1][x1];
             int y2 = y1, x2 = x1;
             while (find(&y2, &x2), y2 >= 0 && x2 >= 0) {
