@@ -67,17 +67,6 @@ void compact(int *expanded, int size) {
     }
 }
 
-// void compact(int *expanded, int size) {
-//     for (int i = 0, j = size - 1; i < j; i++) {
-//         if (expanded[i] == -1) {
-//             while (expanded[j] == -1) j--;
-//             char temp = expanded[i];
-//             expanded[i] = expanded[j];
-//             expanded[j--] = temp;
-//         }
-//     }
-// }
-
 int main() {
     content = read_entire_file("2024/inputs/day-9");
     int old_size = strlen(content)-1;
@@ -85,7 +74,6 @@ int main() {
     int *expanded = expand(old_size, new_size);
     compact(expanded, new_size);
     long sum = 0;
-    // change this too
     for (int i = 0; i < new_size; i++) {
         if (expanded[i] != -1) sum += i * expanded[i];
     }
