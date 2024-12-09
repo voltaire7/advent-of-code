@@ -53,7 +53,6 @@ void compact(int *expanded, int size) {
             while (expanded[++i] == -1) count_available++;
 
             if (count_needed <= count_available) {
-
                 i -= count_available + 1;
                 while (count_needed--) {
                     expanded[++i] = expanded[++j];
