@@ -69,6 +69,7 @@ Node *blink(Node *head) {
         int digits = count_digits(n1->value);
         if (n1->value == 0) {
             Node *node = find(new, 1);
+            
             if (node) node->count += n1->count;
             else add(new, 1, n1->count);
         } else if (digits % 2 == 0) {
@@ -88,6 +89,7 @@ Node *blink(Node *head) {
         } else {
             uint64_t value = n1->value * 2024;
             Node *node = find(new, value);
+
             if (node) node->count += n1->count;
             else add(new, value, n1->count);
         }
