@@ -69,16 +69,14 @@ Node *blink(Node *head) {
         int digits = count_digits(n1->value);
         if (n1->value == 0) {
             Node *node = find(new, 1);
-            
+
             if (node) node->count += n1->count;
             else add(new, 1, n1->count);
         } else if (digits % 2 == 0) {
             int pow = 1;
             for (int k = 0; k < digits/2; k++) pow *= 10;
 
-            uint64_t lval = n1->value / pow;
-            uint64_t rval = n1->value % pow;
-
+            uint64_t lval = n1->value / pow, rval = n1->value % pow;
             Node *lnode = find(new, lval), *rnode = find(new, rval);
 
             if (lnode) lnode->count += n1->count;
