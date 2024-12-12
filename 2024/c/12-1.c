@@ -11,7 +11,7 @@ typedef struct Details {
 } Details;
 
 Details calculate_price(char c, int row, int col) {
-    if (row < 0 || col < 0 || row > SIZE || col > SIZE || map[row][col] != c) return (Details){ .perimeter = 1 };
+    if (row < 0 || col < 0 || row >= SIZE || col >= SIZE || map[row][col] != c) return (Details){ .perimeter = 1 };
     if (explored[row][col]) return (Details){};
 
     explored[row][col] = true;
