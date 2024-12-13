@@ -7,9 +7,9 @@ int main() {
 
     while (!feof(file)) {
         long ax, ay, bx, by, px, py;
-        fscanf(file, "Button A: X+%ld, Y+%ld ", &ax, &ay);
-        fscanf(file, "Button B: X+%ld, Y+%ld ", &bx, &by);
-        fscanf(file, "Prize: X=%ld, Y=%ld ", &px, &py);
+        fscanf(file, "Button A: X+%li, Y+%li ", &ax, &ay);
+        fscanf(file, "Button B: X+%li, Y+%li ", &bx, &by);
+        fscanf(file, "Prize: X=%li, Y=%li ", &px, &py);
 
         px += 10000000000000;
         py += 10000000000000;
