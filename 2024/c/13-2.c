@@ -45,9 +45,7 @@ uint64_t calculate_tokens(ClawMachine cm) {
 
         if (ifx && ify) {
             uint64_t A = diffx / cm.A.x;
-            if (A == diffy / cm.A.y) {
-                return 3 * A + B;
-            }
+            if (A == diffy / cm.A.y) return 3 * A + B;
         }
     }
 

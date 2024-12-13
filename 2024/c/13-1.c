@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdbool.h>
+
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 typedef struct Vector2 {
     int x, y;
@@ -29,22 +32,22 @@ void collect_input(FILE *file, ClawMachine cm[], int length) {
 }
 
 int calculate_tokens(ClawMachine cm) {
-    int B = 0;
-    while (B * cm.B.x <= cm.Prize.x && B * cm.B.y <= cm.Prize.y) B++;
+    int B = MIN(cm.Prize.x/cm.B.x + 1, cm.Prize.y/cm.B.y + 1);
 
-    while (B-- >= 0) {
-        int A = -1, x, y;
+    while (B-- != -1) {
+        int diffx = (cm.Prize.x - B * cm.B.x);
+        int diffy = (cm.Prize.y - B * cm.B.y);
 
-        do {
-            A++;
-            x = B * cm.B.x + A * cm.A.x;
-            y = B * cm.B.y + A * cm.A.y;
-        } while (x < cm.Prize.x && y < cm.Prize.y);
+        bool ifx = diffx % cm.A.x == 0;
+        bool ify = diffy % cm.A.y == 0;
 
-        if (x == cm.Prize.x && y == cm.Prize.y) return 3 * A + B;
+        if (ifx && ify) {
+            int A = diffx / cm.A.x;
+            if (A == diffy / cm.A.y) return 3 * A + B;
+        }
     }
 
-    return -1;
+    return 0;
 }
 
 int main() {
