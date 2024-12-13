@@ -14,10 +14,10 @@ int main() {
         px += 10000000000000;
         py += 10000000000000;
 
-        long numeratorX = px*by - py*bx;
+        long  numeratorX = px*by - py*bx;
         long denomiatorX = ax*by - ay*bx;
 
-        long numeratorY = px*ay - py*ax;
+        long  numeratorY = px*ay - py*ax;
         long denomiatorY = ay*bx - ax*by;
 
         if (numeratorX % denomiatorX == 0 && numeratorY % denomiatorY == 0) {
