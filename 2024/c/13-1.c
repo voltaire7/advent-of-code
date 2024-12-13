@@ -1,4 +1,3 @@
-#include <stdatomic.h>
 #include <stdio.h>
 
 typedef struct Vector2 {
@@ -31,7 +30,7 @@ void collect_input(FILE *file, ClawMachine cm[], int length) {
 
 int calculate_tokens(ClawMachine cm) {
     int B = 0;
-    while (B * cm.B.x <= cm.Prize.x || B * cm.B.y <= cm.Prize.y) B++;
+    while (B * cm.B.x <= cm.Prize.x && B * cm.B.y <= cm.Prize.y) B++;
 
     while (B-- >= 0) {
         int A = -1, x, y;
