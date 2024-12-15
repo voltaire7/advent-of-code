@@ -8,18 +8,14 @@ char map[SIZE][SIZE];
 
 bool move(int x, int y, int vx, int vy) {
     switch (map[y+vy][x+vx]) {
+        case 'O': {
+            bool result = move(x+vx, y+vy, vx, vy);
+            if (!result) return false;
+        }
         case '.':
             map[y+vy][x+vx] = map[y][x];
             map[y][x] = '.';
             return true;
-        case 'O': {
-            bool result = move(x+vx, y+vy, vx, vy);
-            if (result) {
-                map[y+vy][x+vx] = map[y][x];
-                map[y][x] = '.';
-            }
-            return result;
-        }
         case '#':
             return false;
     }
@@ -40,6 +36,7 @@ int main() {
     }
 found:;
 
+    printf("initial state:\n");
     for (int i = 0; i < SIZE; i++) {
         printf("%.*s\n", SIZE, map[i]);
     }
@@ -72,7 +69,7 @@ found:;
         printf("\n");
     }
 
-    long sum;
+    long sum = 0;
     for (int y = 0; y < SIZE; y++) {
         for (int x = 0; x < SIZE; x++) {
             if (map[y][x] == 'O') sum += 100 * y + x;
