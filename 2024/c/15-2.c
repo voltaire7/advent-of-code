@@ -66,7 +66,6 @@ int main() {
             }
         }
     }
-found:;
 
     printf("initial state:\n");
     for (int i = 0; i < SIZE; i++) {
