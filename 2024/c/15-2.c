@@ -26,7 +26,7 @@ void move(int x, int y, int vx, int vy) {
             break;
         case ']':
             move(x+vx, y+vy, vx, vy);
-            if (!vx)  move(x+vx-1, y+vy, vx, vy);
+            if (!vx) move(x+vx-1, y+vy, vx, vy);
             map[y+vy][x+vx] = map[y][x];
             map[y][x] = '.';
             break;
