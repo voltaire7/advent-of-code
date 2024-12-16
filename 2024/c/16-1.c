@@ -1,85 +1,162 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
+#include <math.h>
 
 #define SIZE 141
+#define MAX_NODES (SIZE * SIZE)
+#define TURN_COST 1000
 
-char map[SIZE][SIZE];
-bool explored[SIZE][SIZE] = {};
+typedef struct {
+    int x, y;
+} Point;
 
-typedef enum Direction {
-    EAST,
-    SOUTH,
-    WEST,
-    NORTH,
-} Direction;
+typedef struct {
+    Point pos;
+    float g, h, f;
+    Point parent;
+    int in_open, in_closed;
+    int dir; // Direction: 0=none, 1=up, 2=right, 3=down, 4=left
+} Node;
 
-void *arrdup(void *arr, int size, int length) {
-    void *new_arr = malloc(size * length);
-    if (!new_arr) {
-        printf("Failed to duplicate the array.\n");
-        exit(1);
-    }
-    memcpy(new_arr, arr, size * length);
-    return new_arr;
+char grid[SIZE][SIZE];
+Node nodes[SIZE][SIZE];
+
+float heuristic(Point a, Point b) {
+    return abs(a.x - b.x) + abs(a.y - b.y); // Manhattan distance
 }
 
-bool *dup(bool *explored) {
-    return arrdup(explored, sizeof(bool), SIZE*SIZE);
+void init_grid() {
+    for (int y = 0; y < SIZE; y++) {
+        for (int x = 0; x < SIZE; x++) {
+            nodes[y][x] = (Node){
+                .pos = {x, y},
+                .g = INFINITY,
+                .h = 0,
+                .f = INFINITY,
+                .parent = {-1, -1},
+                .in_open = 0,
+                .in_closed = 0,
+                .dir = 0,
+            };
+        }
+    }
 }
 
-unsigned find(int x, int y, Direction d, int turn_count, bool *explored) {
-    if (map[y][x] == '#' || explored[SIZE * y + x]) {
-        free(explored);
-        return -1;
-    } else if (map[y][x] == 'E') {
-        free(explored);
-        return turn_count * 1000;
+Node *find_lowest_f(Node *open_list[], int open_count) {
+    Node *lowest = open_list[0];
+    for (int i = 1; i < open_count; i++) {
+        if (open_list[i]->f < lowest->f)
+            lowest = open_list[i];
     }
-    explored[SIZE * y + x] = true;
+    return lowest;
+}
 
-    // printf("debug: %i, %i, %i, %c\n", x, y, explored[SIZE * y + x], map[y][x]);
-    // for (int i = 0; i < SIZE; i++) {
-    //     for (int j = 0; j < SIZE; j++) {
-    //         printf("%i", explored[SIZE * i + j]);
-    //     }
-    //     printf("\n");
-    // }
-    // printf("\n");
+int is_valid(int x, int y) {
+    return x >= 0 && y >= 0 && x < SIZE && y < SIZE;
+}
 
-    unsigned right = find(x+1, y, EAST,  (d == EAST  ? 0 : 1) + turn_count, dup(explored));
-    unsigned down  = find(x, y+1, SOUTH, (d == SOUTH ? 0 : 1) + turn_count, dup(explored));
-    unsigned left  = find(x-1, y, WEST,  (d == WEST  ? 0 : 1) + turn_count, dup(explored));
-    unsigned up    = find(x, y-1, NORTH, (d == NORTH ? 0 : 1) + turn_count, dup(explored));
-    
-    unsigned s1 = right < down ? right : down;
-    unsigned s2 = left < up ? left : up;
-    unsigned smallest = s1 < s2 ? s1 : s2;
+void add_to_open(Node *node, Node *open_list[], int *open_count) {
+    node->in_open = 1;
+    open_list[(*open_count)++] = node;
+}
 
-    free(explored);
-    if (smallest != -1) return 1 + smallest;
-    else return -1;
+void remove_from_open(Node *node, Node *open_list[], int *open_count) {
+    node->in_open = 0;
+    for (int i = 0; i < *open_count; i++) {
+        if (open_list[i] == node) {
+            open_list[i] = open_list[--(*open_count)];
+            return;
+        }
+    }
+}
+
+void reconstruct_path(Node *node) {
+    printf("Path: ");
+    while (node->parent.x != -1) {
+        printf("(%d, %d) <- ", node->pos.x, node->pos.y);
+        node = &nodes[node->parent.y][node->parent.x];
+    }
+    printf("\n");
+}
+
+int get_direction(Point from, Point to) {
+    if (to.y < from.y) return 1; // Up
+    if (to.x > from.x) return 2; // Right
+    if (to.y > from.y) return 3; // Down
+    if (to.x < from.x) return 4; // Left
+    return 0; // None
+}
+
+void a_star(Point start, Point goal) {
+    init_grid();
+
+    Node *open_list[MAX_NODES];
+    int open_count = 0;
+
+    Node *start_node = &nodes[start.y][start.x];
+    start_node->g = 0;
+    start_node->h = heuristic(start, goal);
+    start_node->f = start_node->g + start_node->h;
+    start_node->dir = 2;
+    add_to_open(start_node, open_list, &open_count);
+
+    while (open_count > 0) {
+        Node *current = find_lowest_f(open_list, open_count);
+
+        if (current->pos.x == goal.x && current->pos.y == goal.y) {
+            reconstruct_path(current);
+            printf("Total Score: %.0f\n", current->g); // Print the score (g contains total cost).
+            return;
+        }
+
+        remove_from_open(current, open_list, &open_count);
+        current->in_closed = 1;
+
+        int neighbors[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (int i = 0; i < 4; i++) {
+            int nx = current->pos.x + neighbors[i][0];
+            int ny = current->pos.y + neighbors[i][1];
+
+            if (!is_valid(nx, ny) || grid[ny][nx] == '#')
+                continue;
+
+            Node *neighbor = &nodes[ny][nx];
+            if (neighbor->in_closed)
+                continue;
+
+            int new_dir = get_direction(current->pos, neighbor->pos);
+            float turn_cost = (current->dir && current->dir != new_dir) ? TURN_COST : 0;
+
+            float tentative_g = current->g + 1 + turn_cost; // 1 for step, TURN_COST for turns
+            if (!neighbor->in_open || tentative_g < neighbor->g) {
+                neighbor->parent = current->pos;
+                neighbor->g = tentative_g;
+                neighbor->h = heuristic(neighbor->pos, goal);
+                neighbor->f = neighbor->g + neighbor->h;
+                neighbor->dir = new_dir;
+
+                if (!neighbor->in_open) {
+                    add_to_open(neighbor, open_list, &open_count);
+                }
+            }
+        }
+    }
+
+    printf("No path found!\n");
 }
 
 int main() {
     FILE *file = fopen("2024/inputs/day-16", "r");
     for (int i = 0; i < SIZE; i++) {
-        fscanf(file, "%s ", map[i]);
+        fscanf(file, "%s ", grid[i]);
     }
 
-    int y, x;
-    for (y = 0; y < SIZE; y++) {
-        for (x = 0; x < SIZE; x++) {
-            if (map[y][x] == 'S') goto found;
+    Point start, goal;
+    for (int y = 0; y < SIZE; y++) {
+        for (int x = 0; x < SIZE; x++) {
+            if (grid[y][x] == 'S') start = (Point){ x, y };
+            else if (grid[y][x] == 'E') goal = (Point){ x, y };
         }
     }
-found:;
-
-    printf("smallest score: %u\n", find(x, y, EAST, 0, dup((bool *) explored)));
-
-    return 0;
-    for (int i = 0; i < SIZE; i++) {
-        printf("%.*s\n", SIZE, map[i]);
-    }
+    a_star(start, goal);
 }
