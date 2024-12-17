@@ -10,14 +10,14 @@ typedef enum Register {
 
 long program[100], reg[3];
 
-// might need to check for invalid combo
 void run(int size) {
     for (int pointer = 0; pointer < size; pointer += 2) {
         long operand = program[pointer+1];
         long combo = operand <= 3 ? operand : reg[operand-4];
 
         switch (program[pointer]) {
-            case ADV: reg[A] = reg[A] / (1 << combo);
+            case ADV:
+                reg[A] = reg[A] / (1 << combo);
                 break;
             case BXL:
                 reg[B] = reg[B] ^ operand;
